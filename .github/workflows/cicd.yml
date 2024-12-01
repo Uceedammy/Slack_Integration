@@ -10,6 +10,8 @@ jobs:
   terraform:
     name: 'TerraformAzuecloud'
     runs-on: ubuntu-latest
+    env:
+      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
     environment: testing
 
 
@@ -18,6 +20,13 @@ jobs:
         shell: bash
 
     steps:
+    - uses: act10ns/slack@v2
+      with:
+          status: started deployment
+          channel: '#github-actions-pipeline-notification'
+          message: Started terraform deployment to Azure cloud..
+      if: always()
+
     - name: Checkout
       uses: actions/checkout@v4
 
